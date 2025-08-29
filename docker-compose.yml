@@ -20,9 +20,9 @@ services:
     #     volumes:
     #         - '.:/var/www/html'
     #     depends_on: {  }
-  npm:
-    image: 'jc21/nginx-proxy-manager:2.11.3'
-    container_name: 'npm'
+  nginx:
+    image: 'jc21/nginx-proxy-manager:2.12.6'
+    container_name: 'nginx'
     restart: unless-stopped
     ports:
       - '80:80'
@@ -34,5 +34,5 @@ services:
       - ./stacks/npm/snippets:/etc/nginx/snippets:ro
 networks:
   default:
-    external:
-      name: local-dev
+    name: local-dev
+    external: true
