@@ -32,7 +32,6 @@ services:
       - ./storage/app/private/nginx/data:/data
       - ./storage/app/private/nginx/letsencrypt:/etc/letsencrypt
       - ./stacks/npm/snippets:/etc/nginx/snippets:ro
-      # comments
   httpbin:
     container_name: httpbin
     image: kennethreitz/httpbin:latest
