@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->setupEloquent();
+        $this->setupPassport();
+    }
+
+    protected function setupEloquent()
+    {
+        Model::unguard();
+    }
+
+    protected function setupPassport()
+    {
+        // Personal Access Tokens TTL (edge tickets)
+        Passport::personalAccessTokensExpireIn(now()->addMinutes(120));
+
+        // OPTIONAL: restrict scopes globally
+        Passport::tokensCan([
+            'edge' => 'Used by the EdgeAuth gateway',
+        ]);
+
+        Passport::defaultScopes(['edge']);
     }
 }
