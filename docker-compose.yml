@@ -31,7 +31,7 @@ services:
     volumes:
       - ./storage/app/private/nginx/data:/data
       - ./storage/app/private/nginx/letsencrypt:/etc/letsencrypt
-      - ./stacks/npm/snippets:/etc/nginx/snippets:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
   httpbin:
     container_name: httpbin
     image: kennethreitz/httpbin:latest

@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('oauth_auth_codes', function (Blueprint $table) {
+        Schema::create('oauth_device_codes', function (Blueprint $table) {
             $table->char('id', 80)->primary();
-            $table->foreignId('user_id')->index();
-            $table->foreignUuid('client_id');
-            $table->text('scopes')->nullable();
+            $table->foreignUlid('user_id')->nullable()->index();
+            $table->foreignUuid('client_id')->index();
+            $table->char('user_code', 8)->unique();
+            $table->text('scopes');
             $table->boolean('revoked');
+            $table->dateTime('user_approved_at')->nullable();
+            $table->dateTime('last_polled_at')->nullable();
             $table->dateTime('expires_at')->nullable();
         });
     }
@@ -26,7 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('oauth_auth_codes');
+        Schema::dropIfExists('oauth_device_codes');
     }
 
     /**

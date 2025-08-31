@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RequireEdgeSecret;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,9 +10,14 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
-Route::post('/oauth/introspect', function (Request $request) {
+Route::get('/oauth/introspect', function (Request $request) {
 
-    $user  = User::current();
+    $user  = User::api();
+
+    if (! $user) {
+        return response()->json(['active' => false], 401);
+    }
+
     $token = $user?->token() ?? null;
 
     return response()->json([
@@ -24,4 +30,4 @@ Route::post('/oauth/introspect', function (Request $request) {
     ], 200, [
         'X-Auth-User-Id' => (string) $user->getAuthIdentifier(),
     ]);
-})->middleware(['edge.secret', 'auth:api']);
+})->middleware(RequireEdgeSecret::class);

@@ -64,9 +64,18 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public static function current(): self {
+    public static function current(): ?self {
         $user = Auth::user();
-        throw_if(! $user, Exception::class, "Called from invalid auth context!");
+        return $user;
+    }
+
+    public static function web(): ?self {
+        $user = Auth::guard('web')->user();
+        return $user;
+    }
+
+    public static function api(): ?self {
+        $user = Auth::guard('api')->user();
         return $user;
     }
 }
