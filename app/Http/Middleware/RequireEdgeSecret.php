@@ -14,9 +14,10 @@ class RequireEdgeSecret
         $expected = (string) config('app.edge_shared_secret', env('EDGE_SHARED_SECRET', ''));
 
         // Constant-time compare; reject if missing or wrong
-        if ($expected === '' || $provided === '' || !hash_equals($expected, $provided)) {
+        if ($expected === '' || $provided === '' || ! hash_equals($expected, $provided)) {
             abort(403); // Forbidden
         }
+
         return $next($request);
     }
 }

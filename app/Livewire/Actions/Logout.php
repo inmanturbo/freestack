@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Actions;
 
+use App\EdgeAuthSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -13,6 +14,8 @@ class Logout
     public function __invoke()
     {
         Auth::guard('web')->logout();
+
+        EdgeAuthSession::makeForCurrentSession()->destroyThisSessionAndToken();
 
         Session::invalidate();
         Session::regenerateToken();

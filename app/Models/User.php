@@ -4,19 +4,19 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Exception;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements OAuthenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, HasUlids;
+    use HasApiTokens, HasFactory, HasUlids, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -64,18 +64,24 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public static function current(): ?self {
+    public static function current(): ?self
+    {
         $user = Auth::user();
+
         return $user;
     }
 
-    public static function web(): ?self {
+    public static function web(): ?self
+    {
         $user = Auth::guard('web')->user();
+
         return $user;
     }
 
-    public static function api(): ?self {
+    public static function api(): ?self
+    {
         $user = Auth::guard('api')->user();
+
         return $user;
     }
 }
