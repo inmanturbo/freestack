@@ -41,7 +41,7 @@ new class extends Component {
 
             return (object) [
                 'id' => $session->id,
-                'app' => $edge->get('app_host'),
+                'app' => $edge->get('app_host', $session->ip_address),
                 'user_agent' => $userAgent,
                 'last_activity' => $session->last_activity,
                 'last_active' => \Carbon\Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
@@ -187,7 +187,7 @@ new class extends Component {
                                     </div>
                                     
                                     <div class="text-sm text-gray-500 dark:text-gray-500">
-                                        APP: {{ $session->app }} • Last active {{ $session->last_active }}
+                                        {{ $session->app }} • Last active {{ $session->last_active }}
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@ new class extends Component {
 
             <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
                 <flux:text size="sm" class="text-gray-600 dark:text-gray-400">
-                    {{ __('Sessions will automatically expire after being inactive for more than 2 hours.') }}
+                    {{ __('Sessions will automatically expire after being inactive for more than :time.', ['time' => Carbon\CarbonInterval::minutes(config('session.lifetime'))->forHumans()]) }}
                 </flux:text>
             </div>
         </div>
