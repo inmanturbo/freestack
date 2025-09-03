@@ -33,10 +33,25 @@ services:
       - ./storage/app/private/nginx/letsencrypt:/etc/letsencrypt
       - ./nginx/snippets:/etc/nginx/snippets:ro
   httpbin:
-    container_name: httpbin
     image: kennethreitz/httpbin:latest
+    container_name: httpbin
+    restart: unless-stopped
     ports:
       - '8000:80'
+  sqlitebrowser:
+    image: lscr.io/linuxserver/sqlitebrowser:3.13.1-r0-ls166
+    container_name: sqlitebrowser
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./storage/app/private/sqlitebrowser:/config
+      - ./database/database.sqlite:/config/database.sqlite
+    ports:
+      - 3000:3000
+      - 3001:3001
 networks:
   default:
     name: local-dev
