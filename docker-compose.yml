@@ -52,6 +52,19 @@ services:
     ports:
       - 3000:3000
       - 3001:3001
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: unless-stopped
+    environment:
+      - ADMINER_PLUGINS=login
+    volumes:
+      - ./database/database.sqlite:/var/www/html/database.sqlite:ro
+      - ./adminer/plugins/login.php:/var/www/html/plugins/login.php:ro
+    ports:
+      - 8080:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 networks:
   default:
     name: local-dev
