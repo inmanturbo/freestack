@@ -5,7 +5,7 @@
             <flux:navlist.item :href="route('settings.password')" wire:navigate>{{ __('Password') }}</flux:navlist.item>
             <flux:navlist.item :href="route('settings.sessions')" wire:navigate>{{ __('Sessions') }}</flux:navlist.item>
             <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
-            <flux:navlist.item :href="route('settings.api')" wire:navigate>{{ __('API') }}</flux:navlist.item>
+            <flux:navlist.item :href="route('settings.api')" wire:navigate>{{ __('API Tokens') }}</flux:navlist.item>
         </flux:navlist>
     </div>
 
