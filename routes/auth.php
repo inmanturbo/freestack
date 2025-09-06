@@ -1,6 +1,5 @@
 <?php
 
-use App\Edge;
 use App\EdgeAuthSession;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Http\Request;

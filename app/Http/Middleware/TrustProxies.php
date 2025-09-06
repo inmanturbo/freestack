@@ -2,16 +2,16 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Middleware\TrustProxies as Base;
+use Illuminate\Http\Request;
 
 class TrustProxies extends Base
 {
     protected $headers =
         Request::HEADER_X_FORWARDED_FOR
-      | Request::HEADER_X_FORWARDED_HOST
-      | Request::HEADER_X_FORWARDED_PORT
-      | Request::HEADER_X_FORWARDED_PROTO;
+        | Request::HEADER_X_FORWARDED_HOST
+        | Request::HEADER_X_FORWARDED_PORT
+        | Request::HEADER_X_FORWARDED_PROTO;
 
     protected function proxies(): array|string|null
     {

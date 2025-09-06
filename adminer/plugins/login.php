@@ -1,6 +1,7 @@
 <?php
 
-class Login {
+class Login
+{
     protected function cachePassword(?string $password): void
     {
         if ($password !== null && $password !== '') {
@@ -58,11 +59,13 @@ class Login {
         return $password;
     }
 
-    function login($login, $password) {
+    public function login($login, $password)
+    {
         return true; // always accept
     }
 
-    function credentials() {
+    public function credentials()
+    {
         $driver = match (true) {
             isset($_GET['sqlite']) => 'sqlite',
             isset($_GET['mariadb']) => 'mariadb',

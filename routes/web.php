@@ -1,7 +1,6 @@
 <?php
 
 use App\AdminerClient;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 

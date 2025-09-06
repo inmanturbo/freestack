@@ -34,5 +34,6 @@ Route::get('/oauth/introspect', function (Request $request) {
 Route::get('adminer/{key}', function ($key) {
     $data = cache()->pull('adminer:'.$key);
     abort_unless($data, 404);
+
     return response()->json($data);
 });

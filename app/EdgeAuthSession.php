@@ -191,7 +191,7 @@ class EdgeAuthSession
             ->where('id', $sessionId)
             ->value('payload');
 
-        if (!is_string($payload) || $payload === '') {
+        if (! is_string($payload) || $payload === '') {
             return $key === null ? [] : $default;
         }
 
@@ -206,12 +206,12 @@ class EdgeAuthSession
             return $key === null ? [] : $default;
         }
 
-        if (!is_array($session)) {
+        if (! is_array($session)) {
             return $key === null ? [] : $default;
         }
 
         $edgeSession = $session['edge_session'] ?? ($session['data']['edge_session'] ?? null);
-        if (!is_array($edgeSession)) {
+        if (! is_array($edgeSession)) {
             return $key === null ? [] : $default;
         }
 

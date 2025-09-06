@@ -30,7 +30,7 @@ class AdminerClient
                 'username' => $config->username,
                 'db' => $config->database,
                 'key' => $token,
-        ]);
+            ]);
     }
 
     public static function redirect()
