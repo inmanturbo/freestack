@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AccessTokenController;
 use App\Http\Middleware\RequireEdgeSecret;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -8,6 +9,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+Route::middleware('auth:api')->prefix('access-tokens')->group(function () {
+    Route::get('/', [AccessTokenController::class, 'index']);
+    Route::post('/', [AccessTokenController::class, 'store']);
+    Route::get('/{id}', [AccessTokenController::class, 'show']);
+    Route::put('/{id}', [AccessTokenController::class, 'update']);
+    Route::delete('/{id}', [AccessTokenController::class, 'destroy']);
+    Route::post('/{id}/revoke', [AccessTokenController::class, 'revoke']);
+});
 
 Route::get('/oauth/introspect', function (Request $request) {
 

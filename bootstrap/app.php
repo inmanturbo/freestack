@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserApiToken;
 use App\Http\Middleware\TrustProxies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(TrustProxies::class);
         $middleware->web(append: [
             CreateFreshApiToken::class,
+            EnsureUserApiToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -3,6 +3,10 @@
 namespace App;
 
 use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\Token;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Token\Parser;
 
 class UserApiToken
 {
@@ -11,7 +15,7 @@ class UserApiToken
         $token = session('api_token');
         $expiresAt = session('api_token_expires_at');
 
-        if ($token && $expiresAt && now()->lt($expiresAt)) {
+        if ($token && $expiresAt && now()->lt($expiresAt) && static::isPassportTokenValid($token)) {
             return $token;
         }
 
@@ -19,11 +23,7 @@ class UserApiToken
         abort_unless($user, 401);
 
         // Name it and scope it; give it a short expiry (e.g., 60 min).
-        $accessToken = $user->createToken(
-            'livewire-writes',
-            ['post:write'],
-            now()->addMinutes(55) // keep a little earlier than Passport::tokensExpireIn
-        );
+        $accessToken = EdgeAuthSession::makeForCurrentSession()->issueToken();
 
         $plain = $accessToken->accessToken; // Bearer
         session([
@@ -38,5 +38,29 @@ class UserApiToken
     public static function forget(): void
     {
         session()->forget(['api_token', 'api_token_id', 'api_token_expires_at']);
+    }
+
+    protected static function isPassportTokenValid(string $jwt): bool
+    {
+        $parser = new Parser(new JoseEncoder());
+        $token  = $parser->parse($jwt);
+
+        $jti = $token->claims()->get('jti'); // the access_token.id
+
+        $record = Token::find($jti);
+
+        if (! $record) {
+            return false;
+        }
+
+        if ($record->revoked) {
+            return false;
+        }
+
+        if ($record->expires_at && $record->expires_at->isPast()) {
+            return false;
+        }
+
+        return true;
     }
 }

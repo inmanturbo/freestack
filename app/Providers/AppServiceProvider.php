@@ -38,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         // OPTIONAL: restrict scopes globally
         Passport::tokensCan([
             'edge' => 'Used by the EdgeAuth gateway',
+            'read' => 'Read Data',
+            'write' => 'Write Data',
         ]);
 
         Passport::defaultScopes(['edge']);

@@ -21,8 +21,9 @@ Route::middleware(['auth'])->group(function () {
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
     Volt::route('settings/sessions', 'settings.sessions')->name('settings.sessions');
+    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+    Volt::route('settings/api', 'settings.api')->name('settings.api');
 });
 
 require __DIR__.'/auth.php';
