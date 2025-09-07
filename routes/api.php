@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AccessTokenController;
+use App\Http\Controllers\Api\OAuth2ApplicationController;
 use App\Http\Middleware\RequireEdgeSecret;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,6 +18,16 @@ Route::middleware('auth:api')->prefix('access-tokens')->group(function () {
     Route::put('/{id}', [AccessTokenController::class, 'update']);
     Route::delete('/{id}', [AccessTokenController::class, 'destroy']);
     Route::post('/{id}/revoke', [AccessTokenController::class, 'revoke']);
+});
+
+Route::middleware('auth:api')->prefix('oauth-applications')->group(function () {
+    Route::get('/', [OAuth2ApplicationController::class, 'index']);
+    Route::post('/', [OAuth2ApplicationController::class, 'store']);
+    Route::get('/{id}', [OAuth2ApplicationController::class, 'show']);
+    Route::put('/{id}', [OAuth2ApplicationController::class, 'update']);
+    Route::delete('/{id}', [OAuth2ApplicationController::class, 'destroy']);
+    Route::post('/{id}/revoke', [OAuth2ApplicationController::class, 'revoke']);
+    Route::post('/{id}/regenerate-secret', [OAuth2ApplicationController::class, 'regenerateSecret']);
 });
 
 Route::get('/oauth/introspect', function (Request $request) {
