@@ -142,7 +142,7 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('OAuth2 Applications')" :subheading="__('Manage OAuth2 applications for third-party integrations')">
+    <x-settings.layout :heading="__('OAuth Applications')" :subheading="__('Manage OAuth applications for third-party integrations')">
         <div class="my-6 w-full space-y-6">
             @if (session()->has('error'))
                 <div class="rounded-md bg-red-50 dark:bg-red-950 p-4">
@@ -233,14 +233,14 @@ new class extends Component {
 
             @if ($showCreateForm)
                 <flux:card class="p-4">
-                    <flux:heading size="sm" class="mb-4">{{ __('Create New OAuth2 Application') }}</flux:heading>
+                    <flux:heading size="sm" class="mb-4">{{ __('Create New OAuth Application') }}</flux:heading>
                     <form wire:submit="createApplication" class="space-y-4">
                         <flux:input 
                             wire:model="name" 
                             :label="__('Application Name')" 
                             type="text" 
                             required 
-                            placeholder="{{ __('My OAuth2 App') }}" 
+                            placeholder="{{ __('My OAuth App') }}" 
                         />
                         
                         <div>
@@ -368,15 +368,15 @@ new class extends Component {
                 @empty
                     <flux:card class="p-8 text-center">
                         <flux:icon.cog-6-tooth class="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-                        <flux:heading size="lg">{{ __('No OAuth2 Applications') }}</flux:heading>
-                        <flux:subheading>{{ __('Get started by creating your first OAuth2 application.') }}</flux:subheading>
+                        <flux:heading size="lg">{{ __('No OAuth Applications') }}</flux:heading>
+                        <flux:subheading>{{ __('Get started by creating your first OAuth application.') }}</flux:subheading>
                     </flux:card>
                 @endforelse
             </div>
 
             <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
                 <flux:text size="sm" class="text-gray-600 dark:text-gray-400">
-                    {{ __('OAuth2 applications allow third-party services to authenticate users and access your API on their behalf. Keep client secrets secure and regenerate them if compromised.') }}
+                    {{ __('OAuth applications allow third-party services to authenticate users and access your API on their behalf. Keep client secrets secure and regenerate them if compromised.') }}
                 </flux:text>
             </div>
         </div>

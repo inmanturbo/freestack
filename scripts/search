@@ -1,0 +1,204 @@
+#!/bin/bash
+
+# Advanced grep wrapper using ripgrep
+# Usage: ./search [OPTIONS] PATTERN [PATH]
+
+set -e
+
+# Default values
+PATTERN=""
+PATH_ARG="."
+OUTPUT_MODE="content"
+CASE_INSENSITIVE=false
+LINE_NUMBERS=false
+CONTEXT_BEFORE=0
+CONTEXT_AFTER=0
+CONTEXT_BOTH=0
+HEAD_LIMIT=""
+GLOB_PATTERN=""
+FILE_TYPE=""
+MULTILINE=false
+
+# Help function
+show_help() {
+    cat << EOF
+Advanced Search Tool (ripgrep wrapper)
+
+USAGE:
+    search [OPTIONS] PATTERN [PATH]
+
+ARGUMENTS:
+    PATTERN    The regular expression pattern to search for
+    PATH       File or directory to search in (default: current directory)
+
+OPTIONS:
+    -i, --ignore-case           Case insensitive search
+    -n, --line-number          Show line numbers
+    -A, --after NUM            Show NUM lines after each match
+    -B, --before NUM           Show NUM lines before each match  
+    -C, --context NUM          Show NUM lines before and after each match
+    -m, --mode MODE            Output mode: content, files, count (default: content)
+    -l, --limit NUM            Limit output to first NUM results
+    -g, --glob PATTERN         Only search files matching glob pattern
+    -t, --type TYPE            Only search files of specific type (js, py, etc.)
+    -U, --multiline            Enable multiline mode (. matches newlines)
+    -h, --help                 Show this help message
+
+EXAMPLES:
+    search "function.*export" src/                    # Find function exports in src/
+    search -i "todo" --glob "*.js"                   # Case-insensitive search for TODO in JS files
+    search -n -A 2 "class.*Component" --type js      # Find React components with context
+    search -m files "api.*endpoint"                  # Just show filenames containing matches
+    search -m count "console.log" src/               # Count matches in src/
+    search -C 3 "oauth2|OAuth2" resources/views/     # Find OAuth2 with 3 lines context
+    search -U "struct.*{.*field.*}" --type go        # Multiline search in Go files
+
+OUTPUT MODES:
+    content    Show matching lines (default)
+    files      Show only file paths with matches
+    count      Show match counts per file
+EOF
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -i|--ignore-case)
+            CASE_INSENSITIVE=true
+            shift
+            ;;
+        -n|--line-number)
+            LINE_NUMBERS=true
+            shift
+            ;;
+        -A|--after)
+            CONTEXT_AFTER="$2"
+            shift 2
+            ;;
+        -B|--before)
+            CONTEXT_BEFORE="$2"
+            shift 2
+            ;;
+        -C|--context)
+            CONTEXT_BOTH="$2"
+            shift 2
+            ;;
+        -m|--mode)
+            OUTPUT_MODE="$2"
+            shift 2
+            ;;
+        -l|--limit)
+            HEAD_LIMIT="$2"
+            shift 2
+            ;;
+        -g|--glob)
+            GLOB_PATTERN="$2"
+            shift 2
+            ;;
+        -t|--type)
+            FILE_TYPE="$2"
+            shift 2
+            ;;
+        -U|--multiline)
+            MULTILINE=true
+            shift
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -*)
+            echo "Unknown option: $1" >&2
+            show_help >&2
+            exit 1
+            ;;
+        *)
+            if [[ -z "$PATTERN" ]]; then
+                PATTERN="$1"
+            elif [[ -z "$PATH_ARG" || "$PATH_ARG" == "." ]]; then
+                PATH_ARG="$1"
+            else
+                echo "Too many arguments" >&2
+                show_help >&2
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Check if pattern is provided
+if [[ -z "$PATTERN" ]]; then
+    echo "Error: PATTERN is required" >&2
+    show_help >&2
+    exit 1
+fi
+
+# Build ripgrep command
+RG_CMD="rg"
+
+# Case sensitivity
+if [[ "$CASE_INSENSITIVE" == true ]]; then
+    RG_CMD="$RG_CMD -i"
+fi
+
+# Line numbers (only for content mode)
+if [[ "$LINE_NUMBERS" == true && "$OUTPUT_MODE" == "content" ]]; then
+    RG_CMD="$RG_CMD -n"
+fi
+
+# Context lines (only for content mode)
+if [[ "$OUTPUT_MODE" == "content" ]]; then
+    if [[ "$CONTEXT_BOTH" -gt 0 ]]; then
+        RG_CMD="$RG_CMD -C $CONTEXT_BOTH"
+    else
+        if [[ "$CONTEXT_BEFORE" -gt 0 ]]; then
+            RG_CMD="$RG_CMD -B $CONTEXT_BEFORE"
+        fi
+        if [[ "$CONTEXT_AFTER" -gt 0 ]]; then
+            RG_CMD="$RG_CMD -A $CONTEXT_AFTER"
+        fi
+    fi
+fi
+
+# Output mode
+case "$OUTPUT_MODE" in
+    content)
+        # Default behavior, no extra flags needed
+        ;;
+    files)
+        RG_CMD="$RG_CMD -l"
+        ;;
+    count)
+        RG_CMD="$RG_CMD -c"
+        ;;
+    *)
+        echo "Error: Invalid output mode '$OUTPUT_MODE'. Use: content, files, count" >&2
+        exit 1
+        ;;
+esac
+
+# Glob pattern
+if [[ -n "$GLOB_PATTERN" ]]; then
+    RG_CMD="$RG_CMD --glob '$GLOB_PATTERN'"
+fi
+
+# File type
+if [[ -n "$FILE_TYPE" ]]; then
+    RG_CMD="$RG_CMD --type $FILE_TYPE"
+fi
+
+# Multiline mode
+if [[ "$MULTILINE" == true ]]; then
+    RG_CMD="$RG_CMD -U --multiline-dotall"
+fi
+
+# Add pattern and path
+RG_CMD="$RG_CMD '$PATTERN' '$PATH_ARG'"
+
+# Execute command
+if [[ -n "$HEAD_LIMIT" ]]; then
+    eval "$RG_CMD" | head -n "$HEAD_LIMIT"
+else
+    eval "$RG_CMD"
+fi
