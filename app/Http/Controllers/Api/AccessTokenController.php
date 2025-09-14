@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AccessTokenController extends Controller
 {
@@ -24,7 +24,7 @@ class AccessTokenController extends Controller
                     'updated_at' => $token->updated_at,
                     'expires_at' => $token->expires_at,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -33,7 +33,7 @@ class AccessTokenController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'scopes' => 'array',
-            'scopes.*' => 'string'
+            'scopes.*' => 'string',
         ]);
 
         $user = $request->user();
@@ -49,7 +49,7 @@ class AccessTokenController extends Controller
                 'access_token' => $token->accessToken,
                 'created_at' => $token->token->created_at,
                 'expires_at' => $token->token->expires_at,
-            ]
+            ],
         ], 201);
     }
 
@@ -58,7 +58,7 @@ class AccessTokenController extends Controller
         $user = $request->user();
         $token = $user->tokens()->where('id', $id)->first();
 
-        if (!$token) {
+        if (! $token) {
             return response()->json(['message' => 'Token not found'], 404);
         }
 
@@ -71,7 +71,7 @@ class AccessTokenController extends Controller
                 'created_at' => $token->created_at,
                 'updated_at' => $token->updated_at,
                 'expires_at' => $token->expires_at,
-            ]
+            ],
         ]);
     }
 
@@ -80,13 +80,13 @@ class AccessTokenController extends Controller
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'scopes' => 'sometimes|array',
-            'scopes.*' => 'string'
+            'scopes.*' => 'string',
         ]);
 
         $user = $request->user();
         $token = $user->tokens()->where('id', $id)->first();
 
-        if (!$token) {
+        if (! $token) {
             return response()->json(['message' => 'Token not found'], 404);
         }
 
@@ -109,7 +109,7 @@ class AccessTokenController extends Controller
                 'created_at' => $token->created_at,
                 'updated_at' => $token->updated_at,
                 'expires_at' => $token->expires_at,
-            ]
+            ],
         ]);
     }
 
@@ -118,7 +118,7 @@ class AccessTokenController extends Controller
         $user = $request->user();
         $token = $user->tokens()->where('id', $id)->first();
 
-        if (!$token) {
+        if (! $token) {
             return response()->json(['message' => 'Token not found'], 404);
         }
 
@@ -132,7 +132,7 @@ class AccessTokenController extends Controller
         $user = $request->user();
         $token = $user->tokens()->where('id', $id)->first();
 
-        if (!$token) {
+        if (! $token) {
             return response()->json(['message' => 'Token not found'], 404);
         }
 

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Laravel\Passport\Client;
+use Illuminate\Http\Request;
 
 class OAuth2ApplicationController extends Controller
 {
@@ -25,7 +24,7 @@ class OAuth2ApplicationController extends Controller
                     'created_at' => $client->created_at,
                     'updated_at' => $client->updated_at,
                 ];
-            })
+            }),
         ]);
     }
 
@@ -34,11 +33,11 @@ class OAuth2ApplicationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'redirect_uris' => 'required|array',
-            'redirect_uris.*' => 'required|url'
+            'redirect_uris.*' => 'required|url',
         ]);
 
         $user = $request->user();
-        
+
         $client = $user->oauthApps()->create([
             'name' => $request->name,
             'secret' => \Illuminate\Support\Str::random(40),
@@ -56,7 +55,7 @@ class OAuth2ApplicationController extends Controller
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,
                 'updated_at' => $client->updated_at,
-            ]
+            ],
         ], 201);
     }
 
@@ -65,7 +64,7 @@ class OAuth2ApplicationController extends Controller
         $user = $request->user();
         $client = $user->oauthApps()->where('id', $id)->first();
 
-        if (!$client) {
+        if (! $client) {
             return response()->json(['message' => 'Application not found'], 404);
         }
 
@@ -78,7 +77,7 @@ class OAuth2ApplicationController extends Controller
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,
                 'updated_at' => $client->updated_at,
-            ]
+            ],
         ]);
     }
 
@@ -87,13 +86,13 @@ class OAuth2ApplicationController extends Controller
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'redirect_uris' => 'sometimes|required|array',
-            'redirect_uris.*' => 'required|url'
+            'redirect_uris.*' => 'required|url',
         ]);
 
         $user = $request->user();
         $client = $user->oauthApps()->where('id', $id)->first();
 
-        if (!$client) {
+        if (! $client) {
             return response()->json(['message' => 'Application not found'], 404);
         }
 
@@ -116,7 +115,7 @@ class OAuth2ApplicationController extends Controller
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,
                 'updated_at' => $client->updated_at,
-            ]
+            ],
         ]);
     }
 
@@ -125,7 +124,7 @@ class OAuth2ApplicationController extends Controller
         $user = $request->user();
         $client = $user->oauthApps()->where('id', $id)->first();
 
-        if (!$client) {
+        if (! $client) {
             return response()->json(['message' => 'Application not found'], 404);
         }
 
@@ -139,7 +138,7 @@ class OAuth2ApplicationController extends Controller
         $user = $request->user();
         $client = $user->oauthApps()->where('id', $id)->first();
 
-        if (!$client) {
+        if (! $client) {
             return response()->json(['message' => 'Application not found'], 404);
         }
 
@@ -154,7 +153,7 @@ class OAuth2ApplicationController extends Controller
         $user = $request->user();
         $client = $user->oauthApps()->where('id', $id)->first();
 
-        if (!$client) {
+        if (! $client) {
             return response()->json(['message' => 'Application not found'], 404);
         }
 
@@ -170,7 +169,7 @@ class OAuth2ApplicationController extends Controller
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,
                 'updated_at' => $client->updated_at,
-            ]
+            ],
         ]);
     }
 }

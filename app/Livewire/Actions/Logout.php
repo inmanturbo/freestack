@@ -15,7 +15,7 @@ class Logout
     {
         Auth::guard('web')->logout();
 
-        EdgeAuthSession::makeForCurrentSession()->destroyThisSessionAndToken();
+        // EdgeAuthSession::makeForCurrentSession()->destroyThisSessionToken();
 
         Session::invalidate();
         Session::regenerateToken();

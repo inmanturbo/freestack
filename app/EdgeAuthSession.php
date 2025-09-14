@@ -54,9 +54,14 @@ class EdgeAuthSession
     }
 
     /** Issue a PAT aligned to session lifetime; stash token id in THIS session */
-    public function issueToken(): PersonalAccessTokenResult
+    public function issueToken(): ?PersonalAccessTokenResult
     {
         $user = $this->resolveUser();
+
+        if (! $user) {
+            return null;
+        }
+
         $result = $user->createToken('edge-ticket', ['edge']);
 
         $ttl = (int) Facades\Config::get('session.lifetime', 120);
@@ -105,6 +110,16 @@ class EdgeAuthSession
         }
 
         Facades\Session::getHandler()->destroy($this->session->getId());
+
+        return true;
+    }
+
+    /** Revoke THIS session’s PAT (if present), then destroy THIS session */
+    public function destroyThisSessionToken(): bool
+    {
+        if ($tokenId = $this->session->get('current_passport_token_id')) {
+            $this->resolveUser()->tokens()->where('id', $tokenId)->delete();
+        }
 
         return true;
     }
@@ -255,26 +270,26 @@ class EdgeAuthSession
     }
 
     /** Read user_id for THIS session directly from the sessions table */
-    protected function currentUserId(): int|string
+    protected function currentUserId(): null|int|string
     {
         $id = Facades\DB::table('sessions')
             ->where('id', $this->session->getId())
             ->value('user_id');
 
-        if ($id === null) {
-            throw new RuntimeException('No user associated with this session.');
-        }
+        // if ($id === null) {
+        //     throw new RuntimeException('No user associated with this session.');
+        // }
 
         return $id;
     }
 
     /** Resolve the user model for THIS session (must implement Passport OAuthenticatable) */
-    protected function resolveUser(): PassportUser
+    protected function resolveUser(): ?PassportUser
     {
         $provider = Facades\Auth::guard($this->webGuard())->getProvider();
         $user = $provider->retrieveById($this->currentUserId());
 
-        if (! $user instanceof PassportUser) {
+        if ($user && ! $user instanceof PassportUser) {
             throw new RuntimeException('Resolved user does not implement Passport OAuthenticatable.');
         }
 

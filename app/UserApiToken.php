@@ -4,13 +4,12 @@ namespace App;
 
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Token;
-use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 
 class UserApiToken
 {
-    public static function ensure(): string
+    public static function ensure(): ?string
     {
         $token = session('api_token');
         $expiresAt = session('api_token_expires_at');
@@ -24,6 +23,10 @@ class UserApiToken
 
         // Name it and scope it; give it a short expiry (e.g., 60 min).
         $accessToken = EdgeAuthSession::makeForCurrentSession()->issueToken();
+
+        if (! $accessToken?->accessToken) {
+            return null;
+        }
 
         $plain = $accessToken->accessToken; // Bearer
         session([
@@ -42,8 +45,8 @@ class UserApiToken
 
     protected static function isPassportTokenValid(string $jwt): bool
     {
-        $parser = new Parser(new JoseEncoder());
-        $token  = $parser->parse($jwt);
+        $parser = new Parser(new JoseEncoder);
+        $token = $parser->parse($jwt);
 
         $jti = $token->claims()->get('jti'); // the access_token.id
 
