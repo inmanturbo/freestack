@@ -1,8 +1,12 @@
 # FreeStack - Laravel Livewire Starter Kit
 
+[![Tests](https://github.com/inmanturbo/freestack/actions/workflows/tests.yml/badge.svg)](https://github.com/inmanturbo/freestack/actions/workflows/tests.yml)
+
 A modern Laravel starter kit featuring Livewire, Flux UI, Laravel Passport OAuth2, and EdgeAuth for single sign-on (SSO) behind reverse proxies.
 
 > 🚀 **Quick Start:** Use the Laravel installer with `laravel new your-project --using=https://github.com/inmanturbo/freestack` to create a new project based on this starter kit.
+
+> 🐎 **Try with Laravel Herd:** [Open in Laravel Herd](https://herd.laravel.com/github/inmanturbo/freestack)
 
 ## Features
 
