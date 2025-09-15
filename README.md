@@ -2,21 +2,26 @@
 
 A modern Laravel starter kit featuring Livewire, Flux UI, Laravel Passport OAuth2, and EdgeAuth for single sign-on (SSO) behind reverse proxies.
 
+> 🚀 **Quick Start:** Use the Laravel installer with `laravel new your-project --using=https://github.com/inmanturbo/freestack` to create a new project based on this starter kit.
+
 ## Features
 
 ### 🔐 Authentication & Authorization
+
 - **Laravel Passport OAuth2** - Complete OAuth2 server implementation
 - **EdgeAuth SSO** - Custom authentication system for apps behind reverse proxies
 - **Personal Access Tokens** - API token management with scopes
 - **Session Management** - View and manage active user sessions
 
 ### 🎨 Modern UI Stack
+
 - **Livewire** - Dynamic interfaces without leaving Laravel
 - **Flux UI Pro** - Beautiful, accessible components *(required)*
 - **Tailwind CSS** - Utility-first styling
 - **Alpine.js** - Minimal framework for UI interactions
 
 ### 🛠️ Developer Experience
+
 - **Pest Testing** - Modern PHP testing framework
 - **Laravel Pint** - Code style fixer
 - **Comprehensive Tests** - API, Feature, and Unit test coverage
@@ -31,7 +36,20 @@ A modern Laravel starter kit featuring Livewire, Flux UI, Laravel Passport OAuth
 
 ## Installation
 
-### 1. Clone & Install Dependencies
+### Option 1: Using Laravel Installer (Recommended)
+
+If you have the Laravel installer, you can use this starter kit as a template:
+
+```bash
+# Install Laravel installer if you don't have it
+composer global require laravel/installer
+
+# Create new project using this starter kit
+laravel new your-project-name --using=https://github.com/inmanturbo/freestack
+cd your-project-name
+```
+
+### Option 2: Manual Clone
 
 ```bash
 git clone <repository-url> your-project-name
@@ -69,35 +87,14 @@ SESSION_LIFETIME=120
 
 ```bash
 php artisan migrate
-php artisan passport:install
+php artisan passport:keys
 ```
+
+> **Note:** This starter kit includes Passport migrations. Use `passport:keys` to generate encryption keys only.
 
 ### 4. Flux UI Pro Setup
 
-This starter kit requires a **Flux UI Pro license**. After purchasing:
-
-1. Add your license key to `composer.json`:
-```json
-{
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://composer.fluxui.dev",
-            "options": {
-                "http": {
-                    "header": ["API-TOKEN: your-flux-pro-token"]
-                }
-            }
-        }
-    ]
-}
-```
-
-2. Install Flux Pro:
-```bash
-composer require livewire/flux-pro
-php artisan flux:install
-```
+This starter kit requires a **Flux UI Pro license**. Please visit [fluxui.dev](https://fluxui.dev) for installation and activation instructions.
 
 ### 5. Build Assets
 
@@ -313,6 +310,10 @@ php artisan event:cache
 # Optimize Composer
 composer install --optimize-autoloader --no-dev
 ```
+
+## Disclaimer
+
+This is an independent, community-maintained starter kit. We are not affiliated with, endorsed by, or in any way officially connected to Laravel, Livewire, Flux UI, or any of their subsidiaries or affiliates. The names Laravel, Livewire, and Flux UI as well as related names, marks, emblems, and images are registered trademarks of their respective owners.
 
 ## License
 

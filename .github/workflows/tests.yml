@@ -72,8 +72,8 @@ jobs:
       - name: Run database migrations
         run: php artisan migrate --force
 
-      - name: Install Passport
-        run: php artisan passport:install --force
+      - name: Generate Passport Keys
+        run: php artisan passport:keys --force
 
       - name: Build Assets
         run: npm run build
