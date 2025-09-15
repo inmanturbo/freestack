@@ -31,7 +31,7 @@ return [
         'sidebar' => new Layout(
             'sidebar',
             'Sidebar',
-            'examples.layout-features.centered',
+            'examples.layout-features.sidebar',
             'Navigate using a sidebar.',
             'bars-3-bottom-left',
         ),
