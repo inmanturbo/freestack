@@ -303,12 +303,7 @@ SESSION_SECURE_COOKIE=true  # HTTPS only
 
 ```bash
 # Optimize for production
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-php artisan event:cache
-
-# Optimize Composer
+php artisan optimize
 composer install --optimize-autoloader --no-dev
 ```
 
