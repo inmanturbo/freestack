@@ -35,9 +35,8 @@ A modern Laravel starter kit featuring Livewire, Flux UI, Laravel Passport OAuth
 ## Requirements
 
 - PHP 8.2+
-- Laravel 11.x
+- Laravel 12.x
 - MySQL/PostgreSQL
-- Redis (recommended for sessions)
 - **Flux UI Pro License** *(currently required)*
 
 ## Installation
@@ -71,7 +70,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Configure your database and Redis in `.env`:
+Configure your database in `.env`:
 
 ```env
 DB_CONNECTION=mysql
@@ -80,10 +79,6 @@ DB_PORT=3306
 DB_DATABASE=your_database
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
-
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
 
 SESSION_DRIVER=database
 SESSION_LIFETIME=120
@@ -299,7 +294,7 @@ SESSION_SECURE_COOKIE=true  # HTTPS only
 - [ ] Set `APP_ENV=production`
 - [ ] Configure HTTPS with valid certificates
 - [ ] Set secure session cookies (`SESSION_SECURE_COOKIE=true`)
-- [ ] Use Redis for sessions and cache
+- [ ] Configure database sessions properly
 - [ ] Configure rate limiting
 - [ ] Set up log monitoring
 - [ ] Regular security updates
