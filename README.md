@@ -2,6 +2,7 @@
 
 [![Tests](https://github.com/inmanturbo/freestack/actions/workflows/tests.yml/badge.svg)](https://github.com/inmanturbo/freestack/actions/workflows/tests.yml)
 [![Install with Herd](https://img.shields.io/badge/Install%20with%20Herd-fff?logo=laravel&logoColor=f53003)](https://herd.laravel.com/new?starter-kit=inmanturbo/freestack)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/inmanturbo/freestack.svg?style=flat-square)](https://packagist.org/packages/inmanturbo/freestack)
 
 A modern Laravel starter kit featuring Livewire, Flux UI, Laravel Passport OAuth2, and EdgeAuth for single sign-on (SSO) behind reverse proxies.
 
@@ -50,7 +51,7 @@ If you have the Laravel installer, you can use this starter kit as a template:
 composer global require laravel/installer
 
 # Create new project using this starter kit
-laravel new your-project-name --using=https://github.com/inmanturbo/freestack
+laravel new your-project-name --using=inmanturbo/freestack
 cd your-project-name
 ```
 
