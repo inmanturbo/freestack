@@ -18,7 +18,7 @@ class OAuth2ApplicationController extends Controller
                 return [
                     'id' => $client->id,
                     'name' => $client->name,
-                    'secret' => $client->secret,
+                    // Don't return hashed secret in listing
                     'redirect_uris' => $client->redirect_uris,
                     'revoked' => $client->revoked,
                     'created_at' => $client->created_at,
@@ -50,7 +50,7 @@ class OAuth2ApplicationController extends Controller
             'data' => [
                 'id' => $client->id,
                 'name' => $client->name,
-                'secret' => $client->secret,
+                'secret' => $client->plainSecret, // Use plain text secret
                 'redirect_uris' => $client->redirect_uris,
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,
@@ -72,7 +72,7 @@ class OAuth2ApplicationController extends Controller
             'data' => [
                 'id' => $client->id,
                 'name' => $client->name,
-                'secret' => $client->secret,
+                // Don't return hashed secret in show
                 'redirect_uris' => $client->redirect_uris,
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,
@@ -110,7 +110,7 @@ class OAuth2ApplicationController extends Controller
             'data' => [
                 'id' => $client->id,
                 'name' => $client->name,
-                'secret' => $client->secret,
+                // Don't return hashed secret in update
                 'redirect_uris' => $client->redirect_uris,
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,
@@ -164,7 +164,7 @@ class OAuth2ApplicationController extends Controller
             'data' => [
                 'id' => $client->id,
                 'name' => $client->name,
-                'secret' => $client->secret,
+                'secret' => $client->plainSecret, // Use plain text secret
                 'redirect_uris' => $client->redirect_uris,
                 'revoked' => $client->revoked,
                 'created_at' => $client->created_at,

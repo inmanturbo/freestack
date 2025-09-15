@@ -43,5 +43,8 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Passport::defaultScopes(['edge']);
+
+        // Configure headless views for custom OAuth flow
+        Passport::authorizationView('passport.oauth.authorize');
     }
 }
