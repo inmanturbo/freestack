@@ -8,7 +8,7 @@ A modern Laravel starter kit featuring Livewire, Flux UI, Laravel Passport OAuth
 
 > 🚀 **Quick Start:** Use the Laravel installer with `laravel new your-project --using=https://github.com/inmanturbo/freestack` to create a new project based on this starter kit.
 
-> 🐎 **Try with Laravel Herd:** [Open in Laravel Herd](https://herd.laravel.com/new?starter-kit=https://github.com/inmanturbo/freestack)
+> 🐎 **Try with Laravel Herd:** [Open in Laravel Herd](https://herd.laravel.com/new?starter-kit=inmanturbo/freestack)
 
 ## Features
 
