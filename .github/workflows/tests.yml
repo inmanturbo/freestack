@@ -5,10 +5,20 @@ on:
     branches:
       - develop
       - main
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/**'
   pull_request:
     branches:
       - develop
       - main
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/**'
 
 jobs:
   ci:
