@@ -8,24 +8,17 @@ use Livewire\Livewire;
 uses(RefreshDatabase::class);
 
 test('oauth settings component can regenerate secret and display it', function () {
-    // Create a user
+    // Create a user first
     $user = User::factory()->create();
 
-    // Create an OAuth application
-    $client = $user->oauthApps()->create([
-        'name' => 'Test App',
-        'secret' => 'original-secret',
-        'redirect_uris' => ['https://example.com/callback'],
-        'grant_types' => ['authorization_code'],
-        'revoked' => false,
-    ]);
+    $clientId = '01994982-bb4b-726f-8585-bf1fd779f7f4';
 
-    // Mock the API response for regenerate secret
+    // Mock all HTTP calls before any component instantiation
     Http::fake([
         '*/api/oauth-applications' => Http::response([
             'data' => [
                 [
-                    'id' => $client->id,
+                    'id' => $clientId,
                     'name' => 'Test App',
                     'redirect_uris' => ['https://example.com/callback'],
                     'revoked' => false,
@@ -34,9 +27,9 @@ test('oauth settings component can regenerate secret and display it', function (
                 ]
             ]
         ]),
-        "*/api/oauth-applications/{$client->id}/regenerate-secret" => Http::response([
+        "*/api/oauth-applications/*/regenerate-secret" => Http::response([
             'data' => [
-                'id' => $client->id,
+                'id' => $clientId,
                 'name' => 'Test App',
                 'secret' => 'new-regenerated-secret-1234567890123456',
                 'redirect_uris' => ['https://example.com/callback'],
@@ -50,12 +43,12 @@ test('oauth settings component can regenerate secret and display it', function (
     // Act as the user and test the component
     $component = Livewire::actingAs($user)
         ->test('settings.oauth')
-        ->assertSet('applications', function ($applications) use ($client) {
-            return count($applications) === 1 && $applications[0]['id'] === $client->id;
+        ->assertSet('applications', function ($applications) use ($clientId) {
+            return count($applications) === 1 && $applications[0]['id'] === $clientId;
         });
 
     // Call regenerate secret
-    $component->call('regenerateSecret', $client->id);
+    $component->call('regenerateSecret', $clientId);
 
 
     // Assert the newApplication is set
@@ -77,12 +70,12 @@ test('oauth settings component can regenerate secret and display it', function (
 });
 
 test('oauth settings component handles api token correctly', function () {
-    $user = User::factory()->create();
-
-    // Mock API response
+    // Mock API response before creating user
     Http::fake([
         '*/api/oauth-applications' => Http::response(['data' => []], 200),
     ]);
+
+    $user = User::factory()->create();
 
     // Test that the component can make API calls with the session token
     Livewire::actingAs($user)
@@ -97,12 +90,13 @@ test('oauth settings component handles api token correctly', function () {
 });
 
 test('oauth settings component shows error when api fails', function () {
-    $user = User::factory()->create();
-
-    // Mock API failure
+    // Mock API failure before creating user
     Http::fake([
+        '*/api/oauth-applications' => Http::response(['data' => []], 200),
         '*/api/oauth-applications/*' => Http::response(['message' => 'API Error'], 500),
     ]);
+
+    $user = User::factory()->create();
 
     $component = Livewire::actingAs($user)
         ->test('settings.oauth');

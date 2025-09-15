@@ -155,7 +155,7 @@ EdgeAuth enables SSO for applications behind reverse proxies (nginx, Traefik, et
 ```nginx
 location /auth {
     internal;
-    proxy_pass http://freestack.local/oauth/introspect;
+    proxy_pass http://freestack.test/oauth/introspect;
     proxy_pass_request_body off;
     proxy_set_header Content-Length "";
     proxy_set_header X-Original-URI $request_uri;
@@ -163,7 +163,7 @@ location /auth {
 
 location /app {
     auth_request /auth;
-    proxy_pass http://your-app.local;
+    proxy_pass http://your-app.test;
 }
 ```
 
@@ -172,7 +172,7 @@ location /app {
 middlewares:
   auth:
     forwardAuth:
-      address: "http://freestack.local/oauth/introspect"
+      address: "http://freestack.test/oauth/introspect"
       authResponseHeaders:
         - "X-Auth-User-Id"
 ```
@@ -181,7 +181,7 @@ middlewares:
 
 ```bash
 # Initiate SSO redirect
-GET /edge/auth?host=app.example.com&return=/dashboard
+GET /edge/auth?host=app.test&return=/dashboard
 
 # Introspect token (for reverse proxy)
 GET /oauth/introspect
@@ -272,7 +272,7 @@ Passport::tokensCan([
 
 ```env
 # Allowed hosts for EdgeAuth redirects
-EDGE_ALLOWED_HOSTS=app1.example.com,app2.example.com
+EDGE_ALLOWED_HOSTS=app1.test,app2.test
 
 # EdgeAuth secret for introspection
 EDGE_SECRET=your-secure-secret
